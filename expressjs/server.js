@@ -18,20 +18,23 @@ app.use(function(req, res, next) {
       return next()
   });
 
-app.post("/insert" , async (req , res , next) =>{
+app.post("/fuckinginsert" , async (req , res , next) =>{
         //   res.send(req.body)
     let sql = "INSERT INTO user (Name, S_name) VALUES ?";
     var values = [
         [req.body.Name, req.body.S_name],
     ];
-    // console.log(sql,values);
     db.query(sql, [values], await function(err) {
         res.send("success")
-        if (err) throw err;
+        // if (err) throw err;
+        if (err) {
+            res.send(err) 
+        }
+        
     });
 })
 
-app.post("/delete" ,async (req , res ,next) =>{
+app.post("/fuckingdelete" ,async (req , res ,next) =>{
     let mianid = req.body.ID
     db.connect(() =>{
         let sql = `DELETE FROM user WHERE ID = ?`;
@@ -43,13 +46,12 @@ app.post("/delete" ,async (req , res ,next) =>{
 })
 
 app.get("/user" , (req ,res ,next) =>{
-        let sql = 'SELECT * FROM user'  // คำสั่ง sql
+        let sql = 'SELECT ID ,Name,S_name FROM user'  // คำสั่ง sql
         let query = db.query(sql, async(err,results) => { // สั่ง Query คำสั่ง sql
         await res.json(results)   // สร้างผลลัพธ์เป็น JSON ส่งออกไปบน Browser
-        if(err) throw err  // ดัก error
         })
 })
 
 app.listen(8080 ,()=>{
-    console.log("this server is fucking running  on 8080");
+    console.log("server is fucking running on port 8080");
 })
